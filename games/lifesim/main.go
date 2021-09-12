@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"strings"
 	"encoding/json"
+	"github.com/rthornton128/goncurses"
 )
 
 type World_Chunk struct {
@@ -29,11 +30,11 @@ func get_section(chunk_scanner *bufio.Scanner, section *string) {
 	}
 }
 
-func scan_worldchunk(worldchunk_filename string) {
+func scan_worldchunk(worldchunk_filename string) World_Chunk {
 	legend_json := ""
 	var world_chunk World_Chunk
 
-	f, err := os.Open("kuberlogs_bedroom")
+	f, err := os.Open(worldchunk_filename)
 	if err != nil {
 		fmt.Println("failed to open kuberlogs_bedroom: " + err.Error())
 	}
@@ -60,7 +61,7 @@ func scan_worldchunk(worldchunk_filename string) {
 			legend_json += chunk_scanner.Text()
 		case "map":
 			line := chunk_scanner.Text()
-			world_chunk.Map = append(world_chunk.Map, make([]rune, len(line)))
+			world_chunk.Map = append(world_chunk.Map, make([]rune, 0))
 			y := len(world_chunk.Map)-1
 			for _, r := range(line) {
 				world_chunk.Map[y] = append(world_chunk.Map[y], r)
@@ -74,14 +75,55 @@ func scan_worldchunk(worldchunk_filename string) {
 	if err != nil {
 		fmt.Println("error parsing the legend")
 	}
-	fmt.Println(world_chunk)
+	return world_chunk
+}
+
+func game_loop(screen *goncurses.Window, world_chunk *World_Chunk) {
+	pos := []int{5,5}
+	var tmp rune
+	for {
+		tmp = world_chunk.Map[pos[0]][pos[1]]
+		world_chunk.Map[pos[0]][pos[1]] = '&'
+		screen.Clear()
+		for _, y_data := range(world_chunk.Map) {
+			for _, r := range(y_data) {
+				screen.AddChar(goncurses.Char(r))
+			}
+			screen.Println()
+		}
+		key := screen.GetChar()
+
+		// 
+		world_chunk.Map[pos[0]][pos[1]] = tmp
+		switch byte(key) {
+		case 'q':
+			return
+		case 'w':
+			pos = []int{pos[0]-1, pos[1]}
+		case 's':
+			pos = []int{pos[0]+1, pos[1]}
+		case 'd':
+			pos = []int{pos[0], pos[1]+1}
+		case 'a':
+			pos = []int{pos[0], pos[1]-1}
+		}
+		screen.Refresh()
+
+	}
 }
 
 
 func Run() {
+	screen, err := goncurses.Init()
+	if err != nil {
+		fmt.Println("ncurses init failed")
+		return
+	}
+	defer goncurses.End()
 	fmt.Println("welcome to the life sim!")
 	os.Chdir("games/lifesim")
-	scan_worldchunk("kuberlogs_bedroom")
+	world_chunk := scan_worldchunk("kuberlogs_studio")
+	game_loop(screen, &world_chunk)
 
 }
 

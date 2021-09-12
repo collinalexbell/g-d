@@ -1,0 +1,53 @@
+===============<LEGEND>=============
+{
+	"-": "wall",
+	"|": "wall",
+	"w": "window",
+	" ": "space",
+	"b": "bed",
+	"d": "door",
+	"c": "closet",
+	"@": "camera",
+	">": "right directionality",
+	"<": "left directionality",
+	"^": "up directionality",
+	"v": "down directionality",
+	"s": "shower",
+        "r": "refridgerator"
+}
+==============</LEGEND>=============
+
+===============<MAP>================
+
+
+        wwwwww
+       w       -------
+      w                -------\                   wwwwww-
+     w                         \     ------wwwwww-      w
+    w                           -----|         ^        w
+   w                                 |         @>       |
+  w                                  |         bbbbbb   w
+   \                                 |         bbbbbb   w
+    \                                |         bbbbbb   |
+     \                               |         bbbbbb   w
+      \                              d         bbbbbb   w
+        \                            d         bbbbbb   |
+         \                           |                  |
+          |                          --ddd---------------
+          |             --------       ccc
+          |             |   |  |     --------------
+          |             rrr |  |     |            |
+          |             rrr |  |     |            |
+          |             |   |  |     d             ss
+          ------------------|  |     d             ss
+                               |     |             ss
+                               |     |  ###  ttt   ss
+                               |     |  ###  ttt  |
+                               --dd---------------
+===============</MAP>================
+
+===============<DESCRIPTION>=========
+This is @kuberlog's bedroom. 
+There are floor to ceiling windows along the north and east walls.
+The camera is facing northeast, hence the up and right directionality.
+===============</DESCRIPTION>=========
