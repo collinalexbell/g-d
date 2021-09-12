@@ -1,4 +1,4 @@
-package main
+package voice
 
 import (
 	"os"
@@ -7,14 +7,16 @@ import (
 	"fmt"
 )
 
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Println(os.Args)
-		return
-	}
-
+func Run(words_to_say string, out_file_name string) {
 	name := "tts"
-	args := []string{ "--text", os.Args[1], "--model_name", "tts_models/en/ek1/tacotron2", "--out_path", os.Args[2]}
+	args := []string{
+		"--text",
+		words_to_say,
+		"--model_name",
+		"tts_models/en/ek1/tacotron2",
+		"--out_path",
+		out_file_name,
+	}
 	cmd := exec.Command(name, args...)
 	pipe, err := cmd.StdoutPipe()
 
